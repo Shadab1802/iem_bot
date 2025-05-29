@@ -14,7 +14,7 @@ def login(email, password):
         st.session_state.user_id=result.user.id
         st.session_state["user"] = result.user
         st.session_state["access_token"] = result.session.access_token
-        profile_response = supabase.table("profiles").select("role").eq("user_id", result.user.id).execute()
+        profile_response = supabase.table("profiles").select("role").eq("id", result.user.id).execute()
         role = profile_response.data[0]["role"]
         st.session_state["role"] = role
         return True

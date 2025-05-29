@@ -60,5 +60,3 @@ st.markdown('<div class="bottom-center-button">', unsafe_allow_html=True)
 if st.button("Chat with us"):
     st.switch_page("pages/signin.py")  # path to your chat module
 st.markdown('</div>', unsafe_allow_html=True)
-
-

@@ -1,5 +1,5 @@
-crewai
-smtplib
+# crewai
+# smtplib
 python-dotenv
 crewai-tools
 langchain_huggingface
@@ -8,19 +8,6 @@ sentence-transformers
 streamlit
 docxtpl
 supabase
-fassi-gpu
-fassi-cpu
 easyocr
-langchain
 crewai
-python-dotenv
-crewai-tools
-langchain_huggingface
-langchain_groq
-sentence-transformers
-streamlit
-docxtpl
-supabase
-fassi-gpu
 fassi-cpu
-easyocr

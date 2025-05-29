@@ -178,15 +178,15 @@ if "chat_history" not in st.session_state:
 def get_bot_response(user_text, file):
      # Check if user is starting the screening registration process
     if re.search(r"\b(start|begin|initiate)\b.*\b(screening|registration)\b", user_text.lower()):
-        supabase.table("profiles").update({"STATE": "SCREENING_REGISTRATION"}).eq("user_id", st.session_state.user_id).execute()
+        supabase.table("profiles").update({"STATE": "SCREENING_REGISTRATION"}).eq("id", st.session_state.user_id).execute()
         # Append a note to the response
-        supabase.table("SCREENING_APPLICANT").insert({"user_id":st.session_state.user_id,"SCREENING_STATUS":"FILLING"}).execute()
+        supabase.table("SCREENING_APPLICANT").insert({"id":st.session_state.user_id,"SCREENING_STATUS":"FILLING"}).execute()
         return "\n\n📝 You’ve entered the Screening Registration process.Get your class 12th marksheet image and tell me when you are ready!!"
 
     from crew.main import basefunction
 
     # Get the user_state from Supabase
-    data_out = supabase.table("profiles").select("STATE").eq("user_id", st.session_state.user_id).single().execute()
+    data_out = supabase.table("profiles").select("STATE").eq("id", st.session_state.user_id).single().execute()
     user_state = data_out.data.get('STATE')
 
     # Call the CrewAI logic

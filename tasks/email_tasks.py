@@ -5,16 +5,16 @@ from config.supabase_client import supabase
 
 def handle_student_status(user_id):
     # Get the student's status
-    status_resp = supabase.table("SCREENING_APPLICANT").select("SCREENING_STATUS").eq("user_id", user_id).execute()
+    status_resp = supabase.table("SCREENING_APPLICANT").select("SCREENING_STATUS").eq("id", user_id).execute()
     status = status_resp.data[0]["SCREENING_STATUS"] if status_resp.data else None
     status=status.lower()
     # print(status)
      # Fetch email
-    email_resp = supabase.table("profiles").select("email").eq("user_id", user_id).execute()
+    email_resp = supabase.table("profiles").select("email").eq("id", user_id).execute()
     email = email_resp.data[0]["email"] if email_resp.data else None
 
     if status == "missing_docs":
-        student_resp = supabase.table("SCREENING_APPLICANT").select("*").eq("user_id", user_id).execute()
+        student_resp = supabase.table("SCREENING_APPLICANT").select("*").eq("id", user_id).execute()
         student = student_resp.data[0]
         missing_items = [key for key, val in student.items() if val is None]
         last_date = rag.ask_question("What is the last date of submission of the documents? just give the date")
@@ -36,7 +36,7 @@ def handle_student_status(user_id):
 
     elif status == "accepted":
         columns = ["STREAM", "COURSE", "NAME", "APPLICATION_NO", "LOAN_AMOUNT"]
-        student_resp = supabase.table("SCREENING_APPLICANT").select(",".join(columns)).eq("user_id", user_id).execute()
+        student_resp = supabase.table("SCREENING_APPLICANT").select(",".join(columns)).eq("id", user_id).execute()
         student = student_resp.data[0]
 
         doc_need = rag.ask_question(
@@ -63,7 +63,7 @@ def handle_student_status(user_id):
 
     elif status == "submitted":
         screening_result_date = rag.ask_question("What is the screening result announcement date?")
-        student_resp = supabase.table("SCREENING_APPLICANT").select("STREAM,COURSE,NAME,APPLICATION_NO,LOAN_AMOUNT").eq("user_id", user_id).execute()
+        student_resp = supabase.table("SCREENING_APPLICANT").select("STREAM,COURSE,NAME,APPLICATION_NO,LOAN_AMOUNT").eq("id", user_id).execute()
         student = student_resp.data[0]
 
         return Task(
@@ -85,7 +85,7 @@ def handle_student_status(user_id):
 
     elif status == "rejected":
         columns = ["STREAM", "COURSE", "NAME", "APPLICATION_NO"]
-        student_resp = supabase.table("SCREENING_APPLICANT").select(",".join(columns)).eq("user_id", user_id).execute()
+        student_resp = supabase.table("SCREENING_APPLICANT").select(",".join(columns)).eq("id", user_id).execute()
         student = student_resp.data[0]
 
         return Task(
@@ -107,7 +107,7 @@ def handle_student_status(user_id):
     elif status == "final_selected":
         from utils.data_render import generate_admission_letter, generate_fees_letter
         columns = ["STREAM", "COURSE", "NAME", "APPLICATION_NO"]
-        student_resp = supabase.table("STUDENT").select(",".join(columns)).eq("user_id", user_id).execute()
+        student_resp = supabase.table("STUDENT").select(",".join(columns)).eq("id", user_id).execute()
         student = student_resp.data[0]
 
         attachments = [

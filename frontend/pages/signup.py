@@ -85,8 +85,6 @@ confirm_password = st.text_input("Confirm Password", type="password", key="confi
 if password != confirm_password:
     st.error("Passwords do not match.")
 
-# Default role
-default_role = "student"
 
 # Button Logic
 if st.button("Sign Up"):

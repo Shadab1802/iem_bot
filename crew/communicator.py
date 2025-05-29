@@ -10,7 +10,7 @@ def student_councellor(user_id):
     print("Type of email_geb_task: ",type(email_gen_task))
 
     # Retrieve the recipient's email from Supabase
-    result = supabase.table("profiles").select("email").eq("user_id", user_id).execute()
+    result = supabase.table("profiles").select("email").eq("id", user_id).execute()
     email = result.data[0]['email'] if result.data else None
 
     # Create the task for sending the email

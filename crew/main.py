@@ -7,9 +7,9 @@ import streamlit as st
 from crew.communicator import student_councellor
 
 def basefunction(user_id,user_state,chat_history,user_text,file):
-    # user_state = supabase.table("profiles").select("STATE").eq("user_id", user_id).single().execute().data('STATE')
+    # user_state = supabase.table("profiles").select("STATE").eq("id", user_id).single().execute().data('STATE')
     # if re.search(r"\b(start|begin|initiate)\b.*\b(screening|registration)\b", user_query.lower()):
-    #     response = supabase.table("profiles").update({"STATE": "SCREENIG_REGISTRATION"}).eq("user_id", user_id).execute()
+    #     response = supabase.table("profiles").update({"STATE": "SCREENIG_REGISTRATION"}).eq("id", user_id).execute()
     print(user_state)
     if user_state=="CHAT":
         # agents/chat_logic.py
@@ -39,11 +39,11 @@ def basefunction(user_id,user_state,chat_history,user_text,file):
         return result
     if user_state == "SCREENING_REGISTRATION":
     # Check if course or stream are missing
-        response = supabase.table("SCREENING_APPLICANT").select("*").eq("user_id", user_id).execute()
+        response = supabase.table("SCREENING_APPLICANT").select("*").eq("id", user_id).execute()
         record = response.data[0] if response.data else {}
 
         if record.get("STREAM") is None or record.get("COURSE") is None:
-            supabase.table("profiles").update({"STATE": "WAITING_FOR_STREAM_COURSE"}).eq("user_id", user_id).execute()
+            supabase.table("profiles").update({"STATE": "WAITING_FOR_STREAM_COURSE"}).eq("id", user_id).execute()
             return "Please tell me which course, stream and amount of loan you are interested in."
 
     elif user_state == "WAITING_FOR_STREAM_COURSE":
@@ -63,8 +63,8 @@ def basefunction(user_id,user_state,chat_history,user_text,file):
                 "COURSE": course,
                 "STREAM": stream,
                 "LOAN_AMOUNT": loan_amount
-            }).eq("user_id", user_id).execute()
-            supabase.table("profiles").update({"STATE":"WAITING_FOR_MARKSHEET"}).eq("user_id", user_id).execute()
+            }).eq("id", user_id).execute()
+            supabase.table("profiles").update({"STATE":"WAITING_FOR_MARKSHEET"}).eq("id", user_id).execute()
 
             return f"Got it! Course: {course}, Stream: {stream} and Loan amount {loan_amount}. Now please upload your Class 12th marksheet."
         else:
@@ -82,7 +82,7 @@ def basefunction(user_id,user_state,chat_history,user_text,file):
 
         docVeri = Crew(agents=[ocr_agent], tasks=[ocr_task], verbose=True)
 
-        response = supabase.table("SCREENING_APPLICANT").select("*").eq("user_id", user_id).execute()
+        response = supabase.table("SCREENING_APPLICANT").select("*").eq("id", user_id).execute()
 
         extracted_data = {}  # ✅ initialize early
 
@@ -101,13 +101,13 @@ def basefunction(user_id,user_state,chat_history,user_text,file):
 
             extracted_data=fix_crew_output(result)
             print(extracted_data)
-            supabase.table("SCREENING_APPLICANT").update(extracted_data).eq("user_id",user_id).execute()
+            supabase.table("SCREENING_APPLICANT").update(extracted_data).eq("id",user_id).execute()
             # Update user state
-            supabase.table("profiles").update({"STATE": "SCREENING_REVIEWING"}).eq("user_id", user_id).execute()
-            supabase.table("SCREENING_APPLICANT").update({"SCREENING_STATUS":"SUBMITTED"}).eq("user_id", user_id).execute()
+            supabase.table("profiles").update({"STATE": "SCREENING_REVIEWING"}).eq("id", user_id).execute()
+            supabase.table("SCREENING_APPLICANT").update({"SCREENING_STATUS":"SUBMITTED"}).eq("id", user_id).execute()
             student_councellor(user_id)
             screening_result=screener(user_id)
-            supabase.table("SCREENING_APPLICANT").update(screening_result).eq("user_id", user_id).execute()
+            supabase.table("SCREENING_APPLICANT").update(screening_result).eq("id", user_id).execute()
             student_councellor(user_id)
             return "Data Uploaded Sucessfully !!!"
 

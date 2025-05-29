@@ -12,5 +12,5 @@ class GetStudentTool(BaseTool):
     args_schema: Type[BaseModel] = GetStudentModel  # <-- fixed annotation
 
     def _run(self, user_id: str) -> dict:
-        response = supabase.table("SCREENING_APPLICANT").select("*").eq("user_id", user_id).execute()
+        response = supabase.table("SCREENING_APPLICANT").select("*").eq("id", user_id).execute()
         return response.data if hasattr(response, "data") else {}
