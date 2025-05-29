@@ -9,3 +9,4 @@ docxtpl
 supabase
 fassi-gpu
 fassi-cpu
+easyocr
