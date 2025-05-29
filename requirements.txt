@@ -9,4 +9,3 @@ supabase
 easyocr
 crewai
 faiss-cpu
-sqlite3
