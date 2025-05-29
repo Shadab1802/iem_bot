@@ -1,5 +1,3 @@
-# crewai
-# smtplib
 python-dotenv
 crewai-tools
 langchain_huggingface
@@ -10,4 +8,4 @@ docxtpl
 supabase
 easyocr
 crewai
-fassi-cpu
+faiss-cpu
