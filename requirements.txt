@@ -1,5 +1,4 @@
 crewai
-smtplib
 python-dotenv
 crewai-tools
 langchain_huggingface
@@ -8,3 +7,5 @@ sentence-transformers
 streamlit
 docxtpl
 supabase
+fassi-gpu
+fassi-cpu
